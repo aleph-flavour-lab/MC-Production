@@ -183,7 +183,7 @@ class Analysis():
 
 
 
-        jetFlavourHelper = JetFlavourHelper(coll, "jets", "jetc")
+        jetFlavourHelper = JetFlavourHelper("jets", "jetc")
         df = jetFlavourHelper.define(df)
         ##############################################################################################################
   
