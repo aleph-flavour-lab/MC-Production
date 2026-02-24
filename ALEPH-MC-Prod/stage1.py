@@ -178,8 +178,9 @@ class Analysis():
     def output(self):
 
         branchList = [
-
-
+            # Event level variables
+            "event_invariant_mass",
+            "event_njet",
             # Jet variables
             "JetClustering_d23",
             "JetClustering_d34", 
@@ -193,14 +194,12 @@ class Analysis():
             "jet_phi", 
             "jet_theta", 
             "jet_eta",
-
             "jet_nconst", 
             "jet_nel",
             "jet_nmu",
             "jet_ngamma",
             "jet_nnhad",
             "jet_nchad",
-             
             "jetPID",
             ]
       branchList += jetFlavourHelper.outputBranches()
