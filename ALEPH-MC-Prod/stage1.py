@@ -213,11 +213,6 @@ class Analysis():
             "jet_theta", 
             "jet_eta",
             "jet_nconst", 
-            "jet_nel",
-            "jet_nmu",
-            "jet_ngamma",
-            "jet_nnhad",
-            "jet_nchad",
             "jetPID",
             ]
           branchList += jetFlavourHelper.outputBranches()
