@@ -709,7 +709,7 @@ rv::RVec<rv::RVec<float>> get_PID_pvalue(const rv::RVec<rv::RVec<std::array<doub
 
 // Return a new collection (same type) with D0 signs flipped.
 ROOT::VecOps::RVec<edm4hep::TrackState>
-flipD0_copy(const ROOT::VecOps::RVec<edm4hep::TrackState>& tracks) {
+flipSign_copy(const ROOT::VecOps::RVec<edm4hep::TrackState>& tracks) {
   ROOT::VecOps::RVec<edm4hep::TrackState> out;
   out.reserve(tracks.size());
   for (const auto &t : tracks) {
