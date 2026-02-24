@@ -96,7 +96,7 @@ class JetFlavourHelper:
         self.definition["Bz{}".format(self.tag)] = "1.5"
 
         # ===== TRACK PARAMETERS
-        self.definition["TrackStateFlipped{}".format(self.tag)] = "AlephSelection::flipD0_copy( {} )".format(self.coll["TrackState"])
+        self.definition["TrackStateFlipped{}".format(self.tag)] = "AlephSelection::flipSign_copy( {} )".format(self.coll["TrackState"])
         self.definition["pfcand_dxy{}".format(self.tag)] = "JetConstituentsUtils::XPtoPar_dxy({}, TrackStateFlipped{}, Vertex_refit_tlv{}, Bz{})".format(self.const, self.tag, self.tag, self.tag)
         self.definition["pfcand_dz{}".format(self.tag)] = "JetConstituentsUtils::XPtoPar_dz({}, TrackStateFlipped{}, Vertex_refit_tlv{}, Bz{})".format(self.const, self.tag, self.tag, self.tag)
         self.definition["pfcand_phi0{}".format(self.tag)] = "JetConstituentsUtils::XPtoPar_phi({}, TrackStateFlipped{}, Vertex_refit_tlv{}, Bz{})".format(self.const, self.tag, self.tag, self.tag)
