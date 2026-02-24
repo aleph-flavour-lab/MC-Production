@@ -3,24 +3,6 @@ from argparse import ArgumentParser
 from jetFlavourHelper import JetFlavourHelper
 jetFlavourHelper = None
 
-# USE AFTER TRAINING
-# model_name = "ALEPH-CERN-v01"
-# model_dir = os.path.join(os.getcwd(), model_name)
-
-# local_preproc = os.path.join(model_dir, f"{model_name}.json")
-# local_model   = os.path.join(model_dir, f"{model_name}.onnx")
-
-# def get_file_path(filename):
-#     if not os.path.exists(filename):
-#         raise FileNotFoundError(f"Required file not found: {filename}")
-#     return os.path.abspath(filename)
-
-# weaver_preproc = get_file_path(local_preproc)
-# weaver_model   = get_file_path(local_model)
-
-
-
-
 class Analysis():
 
     def __init__(self, cmdline_args):
@@ -183,7 +165,7 @@ class Analysis():
 
 
 
-        jetFlavourHelper = JetFlavourHelper("jets", "jetc")
+        jetFlavourHelper = JetFlavourHelper( "jets", "jetc")
         df = jetFlavourHelper.define(df)
         ##############################################################################################################
   
@@ -213,6 +195,7 @@ class Analysis():
             "jet_theta", 
             "jet_eta",
             "jet_nconst", 
+    
             "jetPID",
             ]
           branchList += jetFlavourHelper.outputBranches()
