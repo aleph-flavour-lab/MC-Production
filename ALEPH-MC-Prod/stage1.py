@@ -1,5 +1,7 @@
 
 from argparse import ArgumentParser
+from jetFlavourHelper import JetFlavourHelper
+jetFlavourHelper = None
 
 class Analysis():
 
@@ -86,6 +88,8 @@ class Analysis():
 
     def analyzers(self, df):
 
+        global jetFlavourHelper
+        
         coll = {
         "GenParticles": "MCParticles",
         "PFParticles": "RecoParticles",
@@ -98,6 +102,7 @@ class Analysis():
         "PathLength": "EFlowTrack_L",
         "Bz": "magFieldBz",
         }
+        
 
         if self.ana_args.doData:
             #df = df.Filter("AlephSelection::sel_class_filter(16)(ClassBitset)   || AlephSelection::sel_class_filter(17)(ClassBitset) ")
@@ -141,11 +146,9 @@ class Analysis():
 
 
         ############################################# Jet Level Variables and selection #######################################################
-        
         df=df.Define("event_njet",   "JetConstituentsUtils::count_jets(jetc)")
         df = df.Filter("event_njet > 1")
-
-        ##############################################################################################################
+        #######################################################################################################################################
         df = df.Define("jet_p", "JetClusteringUtils::get_p(jets)")
         df = df.Define("jet_px", "JetClusteringUtils::get_px(jets)")
         df = df.Define("jet_py", "JetClusteringUtils::get_py(jets)")
@@ -157,7 +160,15 @@ class Analysis():
         df = df.Define("jet_theta", "JetClusteringUtils::get_theta(jets)")
         df = df.Define("jet_eta", "JetClusteringUtils::get_eta(jets)")
 
+      
         
+
+
+
+        jetFlavourHelper = JetFlavourHelper(coll, "jets", "jetc")
+        df = jetFlavourHelper.define(df)
+        ##############################################################################################################
+  
 
         
 
