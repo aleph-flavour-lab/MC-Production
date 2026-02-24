@@ -217,19 +217,20 @@ class JetFlavourHelper:
 
     def outputBranches(self):
         out = list(self.scores) if hasattr(self, 'scores') else []
-        
+    
         # Exclude intermediate result columns that can't be written to disk
         exclude_patterns = [
-            "jet_constituents_dEdx_PIDhypo_pads_result",
-            "jet_constituents_dEdx_PIDhypo_wires_result",
-            "jet_constituents_dEdx_pads_objs",
-            "jet_constituents_dEdx_wires_objs",
-            "jet_constituents_PID_pvals_pads",
-            "jet_constituents_PID_pvals_wires",
+        "jet_constituents_dEdx_PIDhypo_pads_result",
+        "jet_constituents_dEdx_PIDhypo_wires_result",
+        "jet_constituents_dEdx_pads_objs",
+        "jet_constituents_dEdx_wires_objs",
+        "jet_constituents_PID_pvals_pads",
+        "jet_constituents_PID_pvals_wires",
         ]
-        
+    
         out += [
             obs for obs in self.definition.keys()
-            if "jet_" in obs and obs not in exclude_patterns
+            if ("jet_" in obs or "pfcand_" in obs) and obs not in exclude_patterns
+            #if "jet_" in obs and obs not in exclude_patterns
         ]
         return out
