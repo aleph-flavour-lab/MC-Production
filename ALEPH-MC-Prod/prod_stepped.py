@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 """
+python aleph_mcchain.py --start 0 --njobs 1000 --par 64 --last-step julia --outdir /eos/experiment/fcc/ee/analyses/case-studies/aleph/FULLSIM
 ALEPH LEP MC Full Simulation Chain Orchestrator
 ================================================
 Python 2.3 compatible (no subprocess, no generator expressions).
