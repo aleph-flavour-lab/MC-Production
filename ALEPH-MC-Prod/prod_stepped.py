@@ -508,7 +508,7 @@ def parse_args():
     p.add_option('--last-step', dest='last_step', default='miniprod',
                  help='Last step: kingal, galeph, julia, miniprod')
     p.add_option('--outdir', dest='outdir', default='',
-                 help='Output directory for final EPIO files (e.g. /eos/user/h/hfatehi/aleph/mc)')
+             help='Output directory for final EPIO files (e.g. /eos/user/h/hfatehi/aleph/mc)')
     p.add_option('--dry-run', dest='dry_run', action='store_true', default=False)
     opts, args = p.parse_args()
     return opts
