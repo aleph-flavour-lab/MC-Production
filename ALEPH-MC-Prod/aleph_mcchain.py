@@ -29,27 +29,25 @@ Options
     --date    INT   DATE card for GALEPH    (default: 94)
     --workdir STR   Root working directory  (default: ./mcchain_work)
     --dbase   STR   Path to ADBS database
+    --last-step STR Last step to run: kingal, galeph, julia, miniprod (default: miniprod)
     --dry-run       Write cards but do not execute anything
 
 Examples
 --------
-# First 10k events
-python aleph_mcchain.py --start 0 --njobs 10 --par 8
+    # First campaign: 100 jobs = 100k events
+    python aleph_mcchain.py --start 0 --njobs 100 --par 8
 
-# Next 90k (skips already-done jobs automatically)
-python aleph_mcchain.py --start 10 --njobs 90 --par 8
+    # Second campaign: seeds pick up where the first left off
+    python aleph_mcchain.py --start 100 --njobs 1000 --par 8
 
-# 1M events total, aggressive parallelism
-python aleph_mcchain.py --start 0 --njobs 1000 --par 32
+    One important note: if you previously ran a campaign with --last-step kingal and the jobs are
+    marked DONE, then rerunning with --last-step galeph will skip them because the STATUS is already DONE.
+    To continue from where you left off in that case, you'd need to delete the STATUS files for those jobs first:
 
-# Test card generation without running anything
-python aleph_mcchain.py --start 0 --njobs 3 --dry-run
-
-# Different energy (LEP2, WW production)
-python aleph_mcchain.py --start 0 --njobs 100 --ecms 183.0 --flavor 3 --date 97
-
-# Custom output location
-python aleph_mcchain.py --start 0 --njobs 100 --workdir /afs/cern.ch/work/h/hfatehi/aleph/mc_1M
+    # Reset DONE jobs to allow continuing from galeph
+        for d in mcchain_work/job_*/; do
+            cat $d/STATUS 2>/dev/null | grep -q "^DONE$" && rm $d/STATUS
+        done
 """
 
 import os
@@ -270,9 +268,10 @@ echo $? > %(sentinel)s
 # Single-job pipeline
 # ---------------------------------------------------------------------------
 
-def run_job(loseed, inseed, ecms, flavor, date, dbase, root_workdir, dry_run):
+def run_job(loseed, inseed, ecms, flavor, date, dbase, root_workdir, dry_run, last_step='miniprod'):
     """
-    Execute the full chain for one LOSEED value.
+    Execute the chain up to last_step for one LOSEED value.
+    last_step: kingal | galeph | julia | miniprod
     Returns (loseed, success, message).
     """
     jobdir = os.path.join(root_workdir, 'job_%05d' % loseed)
@@ -327,6 +326,11 @@ def run_job(loseed, inseed, ecms, flavor, date, dbase, root_workdir, dry_run):
     else:
         log('[DRY-RUN] kinpyth05 %s' % pyth_path)
 
+    if last_step == 'kingal':
+        write_file(status_file, 'DONE')
+        log('Stopping after KINGAL as requested.')
+        return (loseed, True, 'success')
+
     # ------------------------------------------------------------------
     # Step 2 : GALEPH
     # ------------------------------------------------------------------
@@ -354,6 +358,11 @@ def run_job(loseed, inseed, ecms, flavor, date, dbase, root_workdir, dry_run):
     else:
         log('[DRY-RUN] galeph (cards=%s)' % gal_path)
 
+    if last_step == 'galeph':
+        write_file(status_file, 'DONE')
+        log('Stopping after GALEPH as requested.')
+        return (loseed, True, 'success')
+
     # ------------------------------------------------------------------
     # Step 3 : JULIA
     # ------------------------------------------------------------------
@@ -380,6 +389,11 @@ def run_job(loseed, inseed, ecms, flavor, date, dbase, root_workdir, dry_run):
         log('JULIA OK -> %s' % julia_epio)
     else:
         log('[DRY-RUN] julia (cards=%s)' % jul_path)
+
+    if last_step == 'julia':
+        write_file(status_file, 'DONE')
+        log('Stopping after JULIA as requested.')
+        return (loseed, True, 'success')
 
     # ------------------------------------------------------------------
     # Step 4 : MINIPROD
@@ -442,6 +456,7 @@ class JobThread(threading.Thread):
                 dbase        = self.opts.dbase,
                 root_workdir = self.opts.workdir,
                 dry_run      = self.opts.dry_run,
+                last_step    = self.opts.last_step,
             )
         except Exception:
             tb = traceback.format_exc()
@@ -463,6 +478,8 @@ def parse_args():
     p.add_option('--date',    type='int',   default=DEFAULT_DATE)
     p.add_option('--workdir', default='./mcchain_work')
     p.add_option('--dbase',   default=DEFAULT_DBASE)
+    p.add_option('--last-step', dest='last_step', default='miniprod',
+                 help='Last step: kingal, galeph, julia, miniprod')
     p.add_option('--dry-run', dest='dry_run', action='store_true', default=False)
     opts, args = p.parse_args()
     return opts
@@ -470,6 +487,11 @@ def parse_args():
 
 def main():
     opts = parse_args()
+
+    valid_steps = ['kingal', 'galeph', 'julia', 'miniprod']
+    if opts.last_step not in valid_steps:
+        print 'ERROR: --last-step must be one of: %s' % ', '.join(valid_steps)
+        sys.exit(1)
 
     if not os.path.exists(opts.workdir):
         os.makedirs(opts.workdir)
@@ -484,6 +506,7 @@ def main():
     print '  LOSEED range   : %d .. %d' % (loseeds[0], loseeds[-1])
     print '  Parallelism    : %d' % opts.par
     print '  Work dir       : %s' % opts.workdir
+    print '  Last step      : %s' % opts.last_step
     print '  Dry run        : %s' % opts.dry_run
     print ''
     sys.stdout.flush()
