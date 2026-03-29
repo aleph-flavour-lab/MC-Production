@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 """
-python aleph_mcchain.py --start 0 --njobs 1000 --par 64 --last-step julia --outdir /eos/experiment/fcc/ee/analyses/case-studies/aleph/FULLSIM
 ALEPH LEP MC Full Simulation Chain Orchestrator
 ================================================
 Python 2.3 compatible (no subprocess, no generator expressions).
@@ -36,23 +35,23 @@ Options
 
 Examples
 --------
-    	# First campaign: 100 jobs = 100k events
-    	python aleph_mcchain.py --start 0 --njobs 100 --par 8
+        # First campaign: 100 jobs = 100k events
+        python aleph_mcchain.py --start 0 --njobs 100 --par 8
 
-	# Second campaign: seeds pick up where the first left off
-    	python aleph_mcchain.py --start 100 --njobs 1000 --par 8
+        # Second campaign: seeds pick up where the first left off
+        python aleph_mcchain.py --start 100 --njobs 1000 --par 8
     
-	# Generator level only (fastest — just KINGAL/PYTHIA output)
-	python aleph_mcchain.py --start 0 --njobs 100 --par 16 --last-step kingal
+        # Generator level only (fastest — just KINGAL/PYTHIA output)
+        python aleph_mcchain.py --start 0 --njobs 100 --par 16 --last-step kingal
 
-	# Through detector simulation but skip reconstruction
-	python aleph_mcchain.py --start 0 --njobs 100 --par 8 --last-step galeph
+        # Through detector simulation but skip reconstruction
+        python aleph_mcchain.py --start 0 --njobs 100 --par 8 --last-step galeph
 
-	# Through JULIA (full DST) but skip miniprod reduction
-	python aleph_mcchain.py --start 0 --njobs 100 --par 8 --last-step julia
+        # Through JULIA (full DST) but skip miniprod reduction
+        python aleph_mcchain.py --start 0 --njobs 100 --par 8 --last-step julia
 
-	# Full chain (default, same as before)
-	python aleph_mcchain.py --start 0 --njobs 100 --par 8 --last-step miniprod
+        # Full chain (default, same as before)
+        python aleph_mcchain.py --start 0 --njobs 100 --par 8 --last-step miniprod
 
 """
 
@@ -509,7 +508,7 @@ def parse_args():
     p.add_option('--last-step', dest='last_step', default='miniprod',
                  help='Last step: kingal, galeph, julia, miniprod')
     p.add_option('--outdir', dest='outdir', default='',
-             help='Output directory for final EPIO files (e.g. /eos/user/h/hfatehi/aleph/mc)')
+                 help='Output directory for final EPIO files (e.g. /eos/user/h/hfatehi/aleph/mc)')
     p.add_option('--dry-run', dest='dry_run', action='store_true', default=False)
     opts, args = p.parse_args()
     return opts
