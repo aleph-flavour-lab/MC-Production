@@ -53,6 +53,16 @@ Examples
         # Full chain (default, same as before)
         python aleph_mcchain.py --start 0 --njobs 100 --par 8 --last-step miniprod
 
+
+
+        python aleph_mcchain.py \
+                --start 0 \
+                --njobs 1000 \
+                --par 8 \
+                --date 94 \
+                --last-step miniprod \
+                --outdir /eos/user/h/hfatehi/aleph
+
 """
 
 import os
