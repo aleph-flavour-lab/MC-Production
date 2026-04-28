@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """
+source /cvmfs/sw.hsf.org/key4hep/setup.sh -r 2026-04-08
 Run RWedm4hep_exec in parallel on all mini_XXXXX.fort64 files.
 Output .root files are saved to /eos/user/h/hfatehi/aleph/edm4hep-processed/
 
