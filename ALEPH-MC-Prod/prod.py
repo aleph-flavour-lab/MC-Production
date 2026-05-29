@@ -151,8 +151,8 @@ DEBU 6 / 1  3
 TIME    10
 FILO '%(epio_out)s|EPIO'
 RMAR    %(inseed)s    %(loseed)d
-SVRT  0.0113   0.0005   0.79
-GPYT    %(flavor)d    %(ecms)s    1
+XVRT  -0.060   +0.023   +0.010 ! vertex offset x y z [mm]
+SVRT   0.0124    0.0005    0.72   ! keep original smearingGPYT    %(flavor)d    %(ecms)s    1
 END$
 """ % {'loseed': loseed, 'nevt': EVENTS_PER_JOB,
        'epio_out': epio_out, 'inseed': inseed,
