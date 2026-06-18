@@ -1,4 +1,4 @@
-## Running the Container
+## Running the Container and generating $Z to q\bar{q}$ events.
 
 First, ensure you're inside the Scientific Linux environment. Set it up using the [Singularity guide](https://aleph-new.docs.cern.ch/legacy/singularity/), then run:
 
