@@ -34,7 +34,7 @@ python hvfl05-Zqq.py \
 ---
 
 
-### From Outside the Container
+### From Outside the Container (Make sure to pass eos access if you write your files to the eos)
 
 To run a campaign without entering the container interactively, use the following script. It drops into the SLC4 environment, sources the necessary ALEPH setup files, and launches the job — all in one step:
 
