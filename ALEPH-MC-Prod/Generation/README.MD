@@ -1,4 +1,40 @@
-## Running the Container and generating $Z \to q\bar{q}$ events.
+## Running the Container
+
+### From Outside the Container
+
+To run a campaign without entering the container interactively, use the following script. It drops into the SLC4 environment, sources the necessary ALEPH setup files, and launches the job — all in one step:
+
+```bash
+exec bash -i <<'OUTER'
+aleph-slc4
+
+# ---------- everything below runs INSIDE the SLC4 container ----------
+# Reproduce what the interactive rcfile would have sourced:
+DIRLG="$ALEPHTOOLS/singularity"
+. "$DIRLG/aleph-login.sh"
+. "$DIRLG/alephenv-slc4.sh"
+
+cd /afs/cern.ch/work/h/hfatehi/x
+
+EOSBASE=/eos/user/h/hfatehi/aleph/campagins
+
+# sanity: confirm the ALEPH binaries are on PATH before we start
+echo "--- environment check ---"
+which kinhvfl05 galeph julia miniprod 2>/dev/null || echo "WARNING: some binaries not found on PATH"
+echo "python: $(which python)"
+echo "-------------------------"
+
+echo "================ Campaign (start 0) ================"
+python hvfl05-Zqq.py --start 0 --njobs 1 --par 1 --outdir "$EOSBASE/1"
+echo "================ Campaign finished ================"
+
+exit
+OUTER
+```
+
+---
+
+### From Inside the Container
 
 First, ensure you're inside the Scientific Linux environment. Set it up using the [Singularity guide](https://aleph-new.docs.cern.ch/legacy/singularity/), then run:
 
